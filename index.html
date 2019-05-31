@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="please add">
+
+
+
+      <!-- CSS Base -->
+      <link rel="stylesheet" type='text/css' media='all' href="css/webslides.css">
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"/>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.6.14/c3.min.css" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" media="all" href="css/style.css">
+      <!--add favicon for the web page-->
+      <!-- <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon"> -->
+      <!--use a better font for this web map-->
+    	<link href="https://fonts.googleapis.com/css?family=Cairo" rel="stylesheet">
+
+      <!-- <link rel="stylesheet" type="text/css" href="css/storymap.2.4.css"> -->
+
+      <!-- Javascript Library -->
+
+      <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+      <script src="js/webslides.min.js"></script>
+      <script src="https://unpkg.com/d3@5/dist/d3.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.6.14/c3.min.js"></script>
+
+
+
+
+  </head>
+  <body>
+
+    <article id ="webslides">
+      !-- the landing scene -->
+              <section class="bg-apple">
+                  <video class="background-video dark" autoplay muted loop>
+                      <source src="assets/Forest video background for Leon landing page template.mp4" type="video/mp4">
+                  </video>
+                  <div class="wrap aligncenter">
+                      <h1>
+                          <strong>Saddleback Stand </strong>
+                      </h1>
+                  </div>
+</section>
+<!-- the first map -->
+                  <section class="bg-apple slide-top">
+             <div id="mymap"></div>
+         </section>
+         <!-- the second map -->
+         <section class="bg-apple slide-top">
+             <div id="mymap2"></div>
+         </section>
+
+         <!-- the first chart -->
+             <section class="bg-apple">
+               <div id="mychart1">
+                 <div id="chart1"></div>
+                 <span id="load">Load</span>
+                 <span id="unload">Unload</span>
+               </div>
+             </section>
+<!-- end slide-->
+<section class="bg-apple">
+    <video class="background-video dark" autoplay muted loop>
+        <source src="assets/saddlback_vid.mp4" type="video/mp4">
+    </video>
+    <div class="wrap aligncenter">
+        <h1>
+            <strong>Saddleback Stand </strong>
+        </h1>
+    </div>
+</section>
+
+              <!-- </section> -->
+    </article>
+
+
+    <script type="text/javascript">
+
+    // make the web slide object.
+  var ws = new WebSlides();
+    // declare the first map object
+  var map = L.map("mymap", {zoomControl: false, scrollWheelZoom: false}).setView([39.8283, -98.5795], 5);
+    // decalre the second map object
+  var map2 = L.map("mymap2", {zoomControl: false, scrollWheelZoom: false}).fitBounds([
+      [49.3, -138.5],
+      [22.8, -67.4]
+  ]);
+
+    // add a basemap to the first map
+  L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}@2x.png', {
+      maxZoom: 19
+  }).addTo(map);
+  // add a basemap for the second map
+  L.tileLayer('http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg', {
+      maxZoom: 19
+  }).addTo(map2);
+
+
+      // ws = new WebSlides();
+       ws.el.addEventListener('ws:slide-change', function () {
+
+
+
+
+
+        crtDiv = $(".current div");
+        //Map 1 'flyto' animation location and function
+        if (crtDiv.attr("id") === "mymap") {
+            map.invalidateSize();
+            //starting location latitude and longitude
+            map.setView([39.8283, -98.5795], 5);
+            //Fly to animation  new latitude and longitude
+            map.flyTo([44.56, -123.26], 10, {animate: true, duration: 10});
+            //outline of Washington county
+          }
+
+
+          if (crtDiv.attr("id") === "mymap2") {
+              map2.invalidateSize();
+              //starting location latitude and longitude
+              map2.setView([44.56, -123.26], 10);
+              //Fly to animation  new latitude and longitude
+              map2.flyTo([44.636368, -123.285517], 14, {animate: true, duration: 10});
+              //outline of Washington county
+
+
+
+
+
+      } else if (crtDiv.attr("id") === "mychart1") {
+             var chart1 = c3.generate({
+               bindto: "#chart1",
+               data: {
+                 columns: [
+                   ['2001 MODIS NDVI', 0.755, 0.749, 0.753, 0.747, 0.802, 0.816, 0.82, 0.82, 0.806, 0.8, 0.762, 0.786],
+                   ['2016 MODIS NDVI', 0.831, 0.808, 0.794, 0.815, 0.849, 0.86, 0.848, 0.834, 0.834, 0.832, 0.81, 0.753]
+                 ],
+                 axes: {
+                   data2: 'y2'
+                 },
+                 types: {
+                   data2: 'line' // ADD
+                 }
+               },
+               axis: {
+                 y: {
+                   label: {
+                     text: '2001 NDVI',
+                     position: 'outer-middle'
+                   }
+                 },
+                 y2: {
+                   show: true,
+                   label: {
+                     text: '2016 NDVI',
+                     position: 'outer-middle'
+                   }
+                 }
+               }
+             });
+
+             $("#load").on("mouseover", function() {
+
+               chart1.load({
+                 columns: [
+                   ['2001 Landsat NDVI', 0.36, 0.543, 0.213, 0.158, 0.735, 0.727, 0.305, 0.589, 0.616, 0.541, 0.212, 0.371],
+                   ['2016 Landsat NDVI', 0.292, 0.046, 0.314, 0.724, 0.521, 0.307, 0.728, 0.699, 0.639, 0.532, 0.094, 0.09]
+                 ]
+               });
+
+             })
+
+             $("#unload").on("click", function() {
+
+               chart1.unload({
+                 ids: ['data3', 'data4']
+               });
+
+
+
+
+                 Promise.all([
+                   d3.csv('assets/test1.csv'),
+                   d3.csv('assets/test2.csv'),
+                   d3.json('assets/counties.geojson')
+                 ]).then(function(datasets) {
+
+                   var dataseries1 = ["t"];
+                   var dataseries2 = ["q"];
+
+                   datasets[0].forEach(function(d) {
+                     dataseries1.push(+d["data1"]);
+                     dataseries2.push(+d["data2"]);
+                   });
+
+
+                   var chart2 = c3.generate({
+                               bindto: '#chart2',
+                               data: {
+                                 columns: [
+                                   dataseries1,
+                                   dataseries2
+                                 ],
+                                 axes: {
+                                   dataseries1: 'y2'
+                                 },
+                                 types: {
+                                   t: 'bar',
+                                   q: 'spline' // ADD
+                                 }
+                               },
+                               axis: {
+                                 y: {
+                                   label: {
+                                     text: 'Y Label',
+                                     position: 'outer-middle'
+                                   }
+                                 },
+                                 y2: {
+                                   show: true,
+                                   label: {
+                                     text: 'Y2 Label',
+                                     position: 'outer-middle'
+                                   }
+                                 }
+                               }
+                             });
+
+                           })
+                         })
+
+                       };
+                });
+    </script>
+    </body>
+    </html>
