@@ -35,7 +35,7 @@ Slide with Acknowledgements. Background video is a video loop of a false color i
 * Dynamic fonts
 
 #### Acknowledgements
-Bo Zhao: Instructor
-CartoDB: basemap
-Stamen: terrain basemaps
-Google Earth Engine: Data
+* Bo Zhao: Instructor
+* CartoDB: Basemap
+* Stamen: Terrain basemap
+* Google Earth Engine: Data
